@@ -346,30 +346,6 @@ impl<H, USART: UsartOps<H, RX, TX>, RX, TX, CLOCK> ufmt::uWrite for Usart<H, USA
     }
 }
 
-impl<H, USART: UsartOps<H, RX, TX>, RX, TX, CLOCK> embedded_hal_v0::serial::Write<u8>
-    for Usart<H, USART, RX, TX, CLOCK>
-{
-    type Error = core::convert::Infallible;
-
-    fn write(&mut self, byte: u8) -> nb::Result<(), Self::Error> {
-        self.p.raw_write(byte)
-    }
-
-    fn flush(&mut self) -> nb::Result<(), Self::Error> {
-        self.p.raw_flush()
-    }
-}
-
-impl<H, USART: UsartOps<H, RX, TX>, RX, TX, CLOCK> embedded_hal_v0::serial::Read<u8>
-    for Usart<H, USART, RX, TX, CLOCK>
-{
-    type Error = core::convert::Infallible;
-
-    fn read(&mut self) -> nb::Result<u8, Self::Error> {
-        self.p.raw_read()
-    }
-}
-
 /// Writer half of a [`Usart`] peripheral.
 ///
 /// Created by calling [`Usart::split`].  Splitting a peripheral into reader and writer allows
@@ -441,30 +417,6 @@ impl<H, USART: UsartOps<H, RX, TX>, RX, TX, CLOCK> ufmt::uWrite
             nb::block!(self.p.raw_write(*b)).unwrap_infallible()
         }
         Ok(())
-    }
-}
-
-impl<H, USART: UsartOps<H, RX, TX>, RX, TX, CLOCK> embedded_hal_v0::serial::Write<u8>
-    for UsartWriter<H, USART, RX, TX, CLOCK>
-{
-    type Error = core::convert::Infallible;
-
-    fn write(&mut self, byte: u8) -> nb::Result<(), Self::Error> {
-        self.p.raw_write(byte)
-    }
-
-    fn flush(&mut self) -> nb::Result<(), Self::Error> {
-        self.p.raw_flush()
-    }
-}
-
-impl<H, USART: UsartOps<H, RX, TX>, RX, TX, CLOCK> embedded_hal_v0::serial::Read<u8>
-    for UsartReader<H, USART, RX, TX, CLOCK>
-{
-    type Error = core::convert::Infallible;
-
-    fn read(&mut self) -> nb::Result<u8, Self::Error> {
-        self.p.raw_read()
     }
 }
 

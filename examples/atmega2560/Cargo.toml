@@ -12,10 +12,6 @@ nb = "1.1.0"
 embedded-hal = "1.0"
 avr-device = { version = "0.7", features = ["rt"] }
 
-[dependencies.embedded-hal-v0]
-version = "0.2.3"
-package = "embedded-hal"
-
 [dependencies.atmega-hal]
 path = "../../mcu/atmega-hal/"
 features = ["atmega2560"]
