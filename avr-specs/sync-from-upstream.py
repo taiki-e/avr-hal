@@ -58,7 +58,7 @@ COMMON = {
     # needed because we currently rely on avr-libc
     "no-default-libraries": False,
     # 8-bit operations on AVR are atomic
-    "max-atomic-width": 8,
+    "max-atomic-width": 16,
 }
 
 
