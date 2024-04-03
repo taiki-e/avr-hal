@@ -4,7 +4,6 @@
 
 use core::marker::PhantomData;
 use embedded_hal::digital::{ErrorType, InputPin, OutputPin, StatefulOutputPin};
-use embedded_hal_v0::digital::v2::{InputPin as InputPinV0, OutputPin as OutputPinV0};
 
 pub trait PinMode: crate::Sealed {}
 /// GPIO pin modes
@@ -320,21 +319,6 @@ impl<PIN: PinOps> Pin<mode::Output, PIN> {
     }
 }
 
-// Implements OutputPinV0 from embedded-hal to make sure external libraries work
-impl<PIN: PinOps> OutputPinV0 for Pin<mode::Output, PIN> {
-    type Error = core::convert::Infallible;
-
-    fn set_high(&mut self) -> Result<(), Self::Error> {
-        self.set_high();
-        Ok(())
-    }
-
-    fn set_low(&mut self) -> Result<(), Self::Error> {
-        self.set_low();
-        Ok(())
-    }
-}
-
 impl<PIN: PinOps> ErrorType for Pin<mode::Output, PIN> {
     type Error = core::convert::Infallible;
 }
@@ -392,21 +376,6 @@ impl<PIN: PinOps> Pin<mode::OpenDrain, PIN> {
     }
 }
 
-// Implements OutputPinV0 from embedded-hal to make sure external libraries work
-impl<PIN: PinOps> OutputPinV0 for Pin<mode::OpenDrain, PIN> {
-    type Error = core::convert::Infallible;
-
-    fn set_high(&mut self) -> Result<(), Self::Error> {
-        self.set_high();
-        Ok(())
-    }
-
-    fn set_low(&mut self) -> Result<(), Self::Error> {
-        self.set_low();
-        Ok(())
-    }
-}
-
 impl<PIN: PinOps> OutputPin for Pin<mode::OpenDrain, PIN> {
     fn set_low(&mut self) -> Result<(), Self::Error> {
         self.set_low();
@@ -429,19 +398,6 @@ impl<PIN: PinOps> StatefulOutputPin for Pin<mode::OpenDrain, PIN> {
     }
 }
 
-// Implements InputPinV0 from embedded-hal to make sure external libraries work
-impl<PIN: PinOps> InputPinV0 for Pin<mode::OpenDrain, PIN> {
-    type Error = core::convert::Infallible;
-
-    fn is_high(&self) -> Result<bool, Self::Error> {
-        Ok(self.is_high())
-    }
-
-    fn is_low(&self) -> Result<bool, Self::Error> {
-        Ok(self.is_low())
-    }
-}
-
 impl<PIN: PinOps> ErrorType for Pin<mode::OpenDrain, PIN> {
     type Error = core::convert::Infallible;
 }
@@ -453,19 +409,6 @@ impl<PIN: PinOps> InputPin for Pin<mode::OpenDrain, PIN> {
 
     fn is_low(&mut self) -> Result<bool, Self::Error> {
         Ok((*self).is_low())
-    }
-}
-
-// Implements InputPinV0 from embedded-hal to make sure external libraries work
-impl<PIN: PinOps, IMODE: mode::InputMode> InputPinV0 for Pin<mode::Input<IMODE>, PIN> {
-    type Error = core::convert::Infallible;
-
-    fn is_high(&self) -> Result<bool, Self::Error> {
-        Ok(self.is_high())
-    }
-
-    fn is_low(&self) -> Result<bool, Self::Error> {
-        Ok(self.is_low())
     }
 }
 

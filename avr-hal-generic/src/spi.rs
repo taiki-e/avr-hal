@@ -95,37 +95,6 @@ pub trait SpiOps<H, SCLK, MOSI, MISO, CS> {
 /// output pin, because it implements all the same traits from embedded-hal.
 pub struct ChipSelectPin<CSPIN>(port::Pin<port::mode::Output, CSPIN>);
 
-impl<CSPIN: port::PinOps> embedded_hal_v0::digital::v2::OutputPin for ChipSelectPin<CSPIN> {
-    type Error = core::convert::Infallible;
-    fn set_low(&mut self) -> Result<(), Self::Error> {
-        self.0.set_low();
-        Ok(())
-    }
-    fn set_high(&mut self) -> Result<(), Self::Error> {
-        self.0.set_high();
-        Ok(())
-    }
-}
-
-impl<CSPIN: port::PinOps> embedded_hal_v0::digital::v2::StatefulOutputPin for ChipSelectPin<CSPIN> {
-    fn is_set_low(&self) -> Result<bool, Self::Error> {
-        Ok(self.0.is_set_low())
-    }
-    fn is_set_high(&self) -> Result<bool, Self::Error> {
-        Ok(self.0.is_set_high())
-    }
-}
-
-impl<CSPIN: port::PinOps> embedded_hal_v0::digital::v2::ToggleableOutputPin
-    for ChipSelectPin<CSPIN>
-{
-    type Error = core::convert::Infallible;
-    fn toggle(&mut self) -> Result<(), Self::Error> {
-        self.0.toggle();
-        Ok(())
-    }
-}
-
 impl<CSPIN: port::PinOps> embedded_hal::digital::ErrorType for ChipSelectPin<CSPIN> {
     type Error = core::convert::Infallible;
 }
@@ -272,6 +241,7 @@ where
         Ok(())
     }
 
+    /*
     fn receive(&mut self) -> u8 {
         self.p.raw_read()
     }
@@ -280,34 +250,7 @@ where
         self.write_in_progress = true;
         self.p.raw_write(byte);
     }
-}
-
-/// FullDuplex trait implementation, allowing this struct to be provided to
-/// drivers that require it for operation.  Only 8-bit word size is supported
-/// for now.
-impl<H, SPI, SCLKPIN, MOSIPIN, MISOPIN, CSPIN> embedded_hal_v0::spi::FullDuplex<u8>
-    for Spi<H, SPI, SCLKPIN, MOSIPIN, MISOPIN, CSPIN>
-where
-    SPI: SpiOps<H, SCLKPIN, MOSIPIN, MISOPIN, CSPIN>,
-    SCLKPIN: port::PinOps,
-    MOSIPIN: port::PinOps,
-    MISOPIN: port::PinOps,
-    CSPIN: port::PinOps,
-{
-    type Error = core::convert::Infallible;
-
-    /// Sets up the device for transmission and sends the data
-    fn send(&mut self, byte: u8) -> nb::Result<(), Self::Error> {
-        self.flush()?;
-        self.write(byte);
-        Ok(())
-    }
-
-    /// Reads and returns the response in the data register
-    fn read(&mut self) -> nb::Result<u8, Self::Error> {
-        self.flush()?;
-        Ok(self.receive())
-    }
+    */
 }
 
 impl<H, SPI, SCLKPIN, MOSIPIN, MISOPIN, CSPIN> embedded_hal::spi::ErrorType
@@ -391,30 +334,6 @@ where
 
         Ok(())
     }
-}
-
-/// Default Transfer trait implementation. Only 8-bit word size is supported for now.
-impl<H, SPI, SCLKPIN, MOSIPIN, MISOPIN, CSPIN> embedded_hal_v0::blocking::spi::transfer::Default<u8>
-    for Spi<H, SPI, SCLKPIN, MOSIPIN, MISOPIN, CSPIN>
-where
-    SPI: SpiOps<H, SCLKPIN, MOSIPIN, MISOPIN, CSPIN>,
-    SCLKPIN: port::PinOps,
-    MOSIPIN: port::PinOps,
-    MISOPIN: port::PinOps,
-    CSPIN: port::PinOps,
-{
-}
-
-/// Default Write trait implementation. Only 8-bit word size is supported for now.
-impl<H, SPI, SCLKPIN, MOSIPIN, MISOPIN, CSPIN> embedded_hal_v0::blocking::spi::write::Default<u8>
-    for Spi<H, SPI, SCLKPIN, MOSIPIN, MISOPIN, CSPIN>
-where
-    SPI: SpiOps<H, SCLKPIN, MOSIPIN, MISOPIN, CSPIN>,
-    SCLKPIN: port::PinOps,
-    MOSIPIN: port::PinOps,
-    MISOPIN: port::PinOps,
-    CSPIN: port::PinOps,
-{
 }
 
 /// Implement traits for a SPI interface
