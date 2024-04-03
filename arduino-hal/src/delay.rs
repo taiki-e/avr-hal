@@ -1,3 +1,4 @@
+/*
 use embedded_hal_v0::blocking::delay::{DelayMs, DelayUs};
 
 /// Delay type for `embedded-hal` compatibility.
@@ -21,3 +22,4 @@ pub fn delay_ms(ms: u16) {
 pub fn delay_us(us: u32) {
     Delay::new().delay_us(us)
 }
+*/
