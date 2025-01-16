@@ -94,6 +94,8 @@ compile_error!(
 #[doc(cfg(feature = "rt"))]
 pub use avr_device::entry;
 
+pub use avr_device;
+
 #[doc(no_inline)]
 #[cfg(feature = "mcu-atmega")]
 pub use atmega_hal as hal;

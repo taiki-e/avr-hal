@@ -57,6 +57,8 @@ pub use avr_device::attiny88 as pac;
 #[cfg(feature = "rt")]
 pub use avr_device::entry;
 
+pub use avr_device;
+
 #[cfg(feature = "device-selected")]
 pub use pac::Peripherals;
 

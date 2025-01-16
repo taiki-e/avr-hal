@@ -106,6 +106,8 @@ pub use avr_device::atmega88p as pac;
 #[cfg(feature = "rt")]
 pub use avr_device::entry;
 
+pub use avr_device;
+
 #[cfg(feature = "device-selected")]
 pub use pac::Peripherals;
 
